@@ -27,12 +27,29 @@ function memoryStorage(): Pick<Storage, "getItem"> {
 }
 
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
+let dirty = false;
 
 function scheduleSave() {
   const storage = defaultStorage();
   if (!storage) return;
+  dirty = true;
   clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => P.saveState(storage, untrack(() => state)), 300);
+  saveTimer = setTimeout(() => {
+    dirty = false;
+    P.saveState(storage, untrack(() => state));
+  }, 300);
+}
+
+// Durability: a user completing a step and closing the tab within the
+// debounce window must not lose that step.
+if (typeof window !== "undefined") {
+  window.addEventListener("pagehide", () => {
+    const storage = defaultStorage();
+    if (storage && dirty) {
+      dirty = false;
+      P.saveState(storage, untrack(() => state));
+    }
+  });
 }
 
 // A deliberate never-disposed root: this store is an app-wide singleton.
