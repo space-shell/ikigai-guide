@@ -345,6 +345,18 @@ function ListBody(props: {
                         value={entry[f.id] ?? ""}
                         onInput={(e) => update(index(), f.id, e.currentTarget.value)}
                       />
+                    ) : f.type === "select" ? (
+                      <select
+                        id={`${props.stepId}-${index()}-${f.id}`}
+                        class="rounded-md border border-line bg-paper px-3 py-2 text-ink focus:border-aizome"
+                        value={entry[f.id] ?? ""}
+                        onChange={(e) => update(index(), f.id, e.currentTarget.value)}
+                      >
+                        <option value="">Choose…</option>
+                        <For each={f.options ?? []}>
+                          {(opt) => <option value={opt}>{opt}</option>}
+                        </For>
+                      </select>
                     ) : (
                       <input
                         id={`${props.stepId}-${index()}-${f.id}`}

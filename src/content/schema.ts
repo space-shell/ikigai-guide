@@ -49,9 +49,11 @@ export interface ScaleStep {
 export interface ListField {
   id: string;
   label: string;
-  type: "text" | "textarea" | "number";
+  type: "text" | "textarea" | "number" | "select";
   placeholder?: string;
   required?: boolean;
+  /** Options for `select` fields. */
+  options?: string[];
 }
 
 export interface ListStep {

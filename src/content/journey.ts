@@ -96,14 +96,90 @@ export const STAGES: Stage[] = [
         kind: "teach",
         title: "The past is evidence",
         paragraphs: [
-          "Placeholder for M2: why memory-mining works, and how to prompt recall.",
+          "When people hunt for their ikigai, they usually stare at the present and the future — what job, what passion, what next. But your sources leave traces all the way back. Yukari Mitsuhashi, who writes about ikigai as everyday meaning, suggests sifting your memories deliberately: what you loved doing often shows up early, in school years, side pursuits, and the hours that disappeared.",
+          "This stage treats memory as data, not nostalgia. You're looking for patterns — recurring activities, recurring feelings — not for the single defining memory. Nothing you dig up is trivial: the person who spent every afternoon drawing, or building, or organising neighbourhood games is already telling you something.",
+          "Be patient with recall. Concrete places help: the kitchen table, the garden, the friend's house, the classroom you liked. If a memory won't come, skip it — the exercises that follow offer several doors into the same room.",
         ],
       },
       {
         kind: "prompts",
-        title: "Placeholder — peak moments",
-        intro: "Placeholder for M2.",
-        prompts: [{ id: "placeholder", label: "Placeholder prompt." }],
+        title: "Sentence stems",
+        intro:
+          "Complete these quickly, without polishing. First honest answers beat considered ones.",
+        prompts: [
+          {
+            id: "child",
+            label: "When I was a child, I loved…",
+            multiline: true,
+          },
+          {
+            id: "money",
+            label: "If money didn't matter, I would…",
+            multiline: true,
+          },
+          {
+            id: "time",
+            label: "I completely lose track of time when…",
+            multiline: true,
+          },
+          {
+            id: "failure",
+            label: "If I believed I could not fail, I would…",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "list",
+        title: "Peak-moments timeline",
+        intro:
+          "Recall moments when you felt most alive, absorbed, or quietly proud — at any age. Aim for four to eight. Short phrases are fine.",
+        entryNoun: "Moment",
+        minEntries: 4,
+        maxEntries: 12,
+        fields: [
+          { id: "when", label: "Roughly when (age or era)", type: "text", required: true, placeholder: "e.g. age 10, university, a few years ago" },
+          { id: "what", label: "What you were doing", type: "text", required: true, placeholder: "e.g. restoring an old bicycle" },
+          { id: "felt", label: "What it felt like", type: "textarea", placeholder: "e.g. absorbed, useful, unobserved, challenged" },
+        ],
+      },
+      {
+        kind: "prompts",
+        title: "Lost loves",
+        intro:
+          "Most lives contain activities abandoned to circumstance — a move, a job, other people's expectations — rather than to lost interest.",
+        prompts: [
+          {
+            id: "stopped",
+            label: "Which activities did you stop doing, even though the interest itself never died?",
+            multiline: true,
+          },
+          {
+            id: "resume",
+            label: "Which one of those would you resume if life made room for it?",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "prompts",
+        title: "Candidate themes",
+        intro:
+          "Re-read your timeline, stems and lost loves. You're looking for recurring shapes — not conclusions yet.",
+        prompts: [
+          {
+            id: "themes",
+            label: "Which two to four themes keep appearing? Name them in your own words.",
+            placeholder: "e.g. making physical things; being the one who explains; being outdoors; close one-to-one conversations",
+            multiline: true,
+          },
+          {
+            id: "surprise",
+            label: "Did anything in your answers surprise you?",
+            multiline: true,
+            optional: true,
+          },
+        ],
       },
     ],
   },
@@ -116,14 +192,101 @@ export const STAGES: Stage[] = [
     steps: [
       {
         kind: "teach",
-        title: "Placeholder — the present",
-        paragraphs: ["Placeholder for M2: Mogi's pillars, flow, little things."],
+        title: "The present holds sources too",
+        paragraphs: [
+          "The neuroscientist Ken Mogi describes ikigai through five pillars: starting small, releasing yourself, harmony and sustainability, the joy of little things, and being in the here and now. Notice what the pillars assume: ikigai is already available in ordinary days — in a well-made breakfast, a train departure announced on time, a small kindness done properly.",
+          "You do not need to invent a new life to have ikigai. This stage maps what your days actually contain: what energises you, when you disappear into an activity, what people rely on you for. The point is evidence again — the present is where your future sources are hiding in plain sight.",
+        ],
+      },
+      {
+        kind: "teach",
+        title: "Flow and the little things",
+        paragraphs: [
+          "Flow is the state of being fully absorbed — the task's difficulty matching your skill, clear goals, immediate feedback, time distorting. The psychologist Mihaly Csikszentmihalyi found that activities producing flow are among our strongest candidates for ikigai sources, because absorption and worth arrive together.",
+          "The joy of little things is flow's modest sibling. Mogi's pillars treat attention itself as practice: the same cup of tea, fully attended, feeds the feeling Kamiya called ikigai-kan. One of this stage's exercises is exactly that — an act of deliberate attention, not analysis.",
+        ],
+      },
+      {
+        kind: "list",
+        title: "Energy audit",
+        intro:
+          "Think over the last few ordinary days. List the activities that filled them, and how each left you feeling. Honesty about drains matters as much as spotting sparks.",
+        entryNoun: "Activity",
+        minEntries: 3,
+        maxEntries: 15,
+        fields: [
+          { id: "activity", label: "Activity", type: "text", required: true, placeholder: "e.g. the Tuesday meetings" },
+          {
+            id: "energy",
+            label: "Energy afterwards",
+            type: "select",
+            required: true,
+            options: ["Drained", "Slightly drained", "Neutral", "Energised", "Fully alive"],
+          },
+          { id: "notes", label: "Notes (optional)", type: "textarea", placeholder: "e.g. good in small doses; always run over; I lose track of time" },
+        ],
       },
       {
         kind: "prompts",
-        title: "Placeholder — energy audit",
-        intro: "Placeholder for M2.",
-        prompts: [{ id: "placeholder", label: "Placeholder prompt." }],
+        title: "Flow scan",
+        intro: "Recall the last time you lost track of time doing something.",
+        prompts: [
+          {
+            id: "activity",
+            label: "What were you doing?",
+            multiline: true,
+          },
+          {
+            id: "conditions",
+            label: "What made it work — challenge matched to skill, clear goals, instant feedback, no interruption?",
+            multiline: true,
+          },
+          {
+            id: "frequency",
+            label: "How often does this happen with this activity, and what usually gets in its way?",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "prompts",
+        title: "Little things",
+        intro:
+          "A short practice, not a question. Sometime today, do one mundane act — making tea, washing a dish, walking to the letterbox — and attend to it completely.",
+        prompts: [
+          {
+            id: "act",
+            label: "Which act did you choose, and what did you notice when you attended to it fully?",
+            multiline: true,
+          },
+          {
+            id: "difference",
+            label: "Did the act feel different? Say so honestly, even if the difference was small or absent.",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "prompts",
+        title: "Strengths",
+        intro: "Evidence from other people is often clearer than self-report.",
+        prompts: [
+          {
+            id: "asked",
+            label: "What do people ask you for — help, advice, time, company?",
+            multiline: true,
+          },
+          {
+            id: "effortless",
+            label: "What comes to you effortlessly that others seem to find hard?",
+            multiline: true,
+          },
+          {
+            id: "proud",
+            label: "Which of your ordinary abilities are you quietly proudest of?",
+            multiline: true,
+          },
+        ],
       },
     ],
   },

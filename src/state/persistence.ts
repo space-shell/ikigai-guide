@@ -55,7 +55,7 @@ export function validateState(value: unknown): JourneyState | null {
 }
 
 export function serializeState(state: JourneyState): string {
-  return JSON.stringify({ ...state, updatedAt: new Date().toISOString() });
+  return JSON.stringify(state);
 }
 
 export function parseState(raw: string): JourneyState | null {
