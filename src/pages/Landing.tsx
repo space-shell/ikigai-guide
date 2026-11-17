@@ -1,4 +1,13 @@
+import { createMemo, Show } from "solid-js";
+import { journeyProgress } from "../state/store";
+
 export function Landing() {
+  const progress = createMemo(() => journeyProgress());
+  const started = createMemo(() => progress().done > 0);
+  const pct = createMemo(() =>
+    progress().total === 0 ? 0 : Math.round((progress().done / progress().total) * 100),
+  );
+
   return (
     <div class="min-h-dvh">
       <header class="mx-auto flex max-w-prose items-baseline justify-between px-6 pt-10">
@@ -9,7 +18,7 @@ export function Landing() {
           class="text-ink-soft underline-offset-4 hover:text-ink hover:underline"
           href="#/journey"
         >
-          Start
+          The journey
         </a>
       </header>
 
@@ -30,7 +39,9 @@ export function Landing() {
             href="#/journey"
             class="mt-10 inline-block rounded-sm bg-aizome px-6 py-3 font-medium text-white transition-colors hover:bg-aizome-deep"
           >
-            Begin the journey
+            <Show when={started()} fallback="Begin the journey">
+              Continue — {pct()}% complete
+            </Show>
           </a>
         </section>
 

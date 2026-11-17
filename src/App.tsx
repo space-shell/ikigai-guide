@@ -2,6 +2,7 @@ import { type Accessor, Match, Switch } from "solid-js";
 import type { Route } from "./router";
 import { Landing } from "./pages/Landing";
 import { JourneyMap } from "./pages/JourneyMap";
+import { Step } from "./pages/Step";
 
 export function App(props: { route: Accessor<Route> }) {
   return (
@@ -13,7 +14,7 @@ export function App(props: { route: Accessor<Route> }) {
         <JourneyMap />
       </Match>
       <Match when={props.route().name === "step"}>
-        <StepPlaceholder route={props.route} />
+        <Step route={props.route} />
       </Match>
       <Match when={props.route().name === "map"}>
         <Placeholder title="My Ikigai Map" note="Arrives in milestone M4." />
@@ -25,17 +26,6 @@ export function App(props: { route: Accessor<Route> }) {
         <NotFound />
       </Match>
     </Switch>
-  );
-}
-
-function StepPlaceholder(props: { route: Accessor<Route> }) {
-  const r = props.route();
-  if (r.name !== "step") return null;
-  return (
-    <Placeholder
-      title="Journey step"
-      note={`Stage ${r.stage}, step ${r.step} — the journey engine lands in milestone M1.`}
-    />
   );
 }
 
