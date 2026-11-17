@@ -12,7 +12,7 @@ export function Landing() {
     <div class="min-h-dvh">
       <header class="mx-auto flex max-w-prose items-baseline justify-between px-6 pt-10">
         <p class="font-display text-lg">
-          ikigai <span class="text-ink-faint">生きがい</span>
+          ikigai <span class="text-ink-faint" lang="ja">生きがい</span>
         </p>
         <a
           class="text-ink-soft underline-offset-4 hover:text-ink hover:underline"
@@ -79,7 +79,7 @@ export function Landing() {
       </main>
 
       <footer class="mx-auto max-w-prose px-6 pb-10">
-        <p class="vertical-ja fixed top-1/2 right-6 hidden -translate-y-1/2 lg:block">
+        <p class="vertical-ja fixed top-1/2 right-6 hidden -translate-y-1/2 lg:block" lang="ja">
           生きがいを見つける
         </p>
       </footer>

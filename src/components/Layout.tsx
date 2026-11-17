@@ -7,7 +7,7 @@ export function Layout(props: { children: JSX.Element }) {
       <header class="border-b border-line">
         <div class="mx-auto flex max-w-prose items-center justify-between px-6 py-4">
           <a class="font-display text-base" href="#/">
-            ikigai <span class="text-ink-faint">生きがい</span>
+            ikigai <span class="text-ink-faint" lang="ja">生きがい</span>
           </a>
           <nav class="flex gap-5 text-sm text-ink-soft" aria-label="Main">
             <a class="hover:text-ink underline-offset-4 hover:underline" href="#/journey">

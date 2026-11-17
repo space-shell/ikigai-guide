@@ -217,7 +217,7 @@ function ScaleBody(props: {
           {(item) => (
             <fieldset class="rounded-md border border-line bg-surface p-4">
               <legend class="px-1 text-sm font-medium text-ink">{item.label}</legend>
-              <div class="mt-1 flex items-center justify-between gap-3">
+              <div class="mt-1 flex flex-wrap items-center justify-between gap-3">
                 <span class="text-xs text-ink-faint">{item.minLabel}</span>
                 <div class="flex gap-2">
                   <For each={[...SCALE_VALUES]}>
