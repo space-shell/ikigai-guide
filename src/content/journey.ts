@@ -590,14 +590,67 @@ export const STAGES: Stage[] = [
     steps: [
       {
         kind: "teach",
-        title: "Placeholder — enemies",
-        paragraphs: ["Placeholder for M4: the four enemies; if-then plans; experiments."],
+        title: "The four enemies",
+        paragraphs: [
+          "Tim Tamashiro names four fears that block ikigai: fear of failure, fear of success, fear of what others will think, and fear of discomfort. They rarely announce themselves — they arrive as “someday”, “I'm not ready”, or a sudden full calendar.",
+          "The useful move is naming. Written down, a fear shrinks to a specific object with a specific shape, and specific objects can be planned around. Morita therapy adds the sting: don't wait for the fear to pass. Act with the fear in the room — the action comes first, the confidence after.",
+          "You will not eliminate these fears. The goal is smaller and real: recognise which ones grip you, and have a move ready for each.",
+        ],
+      },
+      {
+        kind: "list",
+        title: "Enemies worksheet",
+        intro:
+          "Name the fears that actually apply to you — one to four is plenty. For each: how it shows up, how tightly it grips, and one counter-move.",
+        entryNoun: "Fear",
+        minEntries: 2,
+        maxEntries: 4,
+        fields: [
+          {
+            id: "fear",
+            label: "Which fear",
+            type: "select",
+            required: true,
+            options: ["Fear of failure", "Fear of success", "Fear of others' judgment", "Fear of discomfort", "Something else"],
+          },
+          { id: "shows", label: "How it shows up in your life", type: "textarea", required: true, placeholder: "e.g. I bookmark courses and never start; I downplay my work when asked" },
+          { id: "grip", label: "How tight is its grip", type: "select", required: true, options: ["Loose", "Moderate", "Tight"] },
+          { id: "counter", label: "One counter-move", type: "text", required: true, placeholder: "e.g. show one unfinished thing to one person this week" },
+        ],
       },
       {
         kind: "prompts",
-        title: "Placeholder — enemies worksheet",
-        intro: "Placeholder for M4.",
-        prompts: [{ id: "placeholder", label: "Placeholder prompt." }],
+        title: "If-then plans",
+        intro:
+          "Implementation intentions: decide now what you will do when the fear speaks. Specific beats heroic.",
+        prompts: [
+          {
+            id: "plan1",
+            label: "If [the fear appears in situation X], then I will [small concrete action]. Write your first plan.",
+            multiline: true,
+          },
+          {
+            id: "plan2",
+            label: "And a second plan, for the fear you rated tightest.",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "list",
+        title: "Experiments plan",
+        intro:
+          "Depth comes from action, not insight. Design three small experiments that give a source room to breathe — minimum versions, real dates.",
+        entryNoun: "Experiment",
+        minEntries: 3,
+        maxEntries: 5,
+        seedFrom: [{ stepId: "4-1", field: "source", targetField: "source" }],
+        fields: [
+          { id: "source", label: "Which source it serves", type: "text", required: true, placeholder: "e.g. teaching the kids to swim" },
+          { id: "minimum", label: "The minimum version", type: "text", required: true, placeholder: "e.g. one hour, once, this week" },
+          { id: "when", label: "When it happens", type: "text", required: true, placeholder: "e.g. Saturday morning" },
+          { id: "checkin", label: "Check-in date", type: "text", placeholder: "e.g. Sunday evening" },
+        ],
       },
     ],
   },
@@ -610,14 +663,54 @@ export const STAGES: Stage[] = [
     steps: [
       {
         kind: "teach",
-        title: "Placeholder — synthesis",
-        paragraphs: ["Placeholder for M4: the artifact, the retest, the practice loop."],
+        title: "Practice, not trophy",
+        paragraphs: [
+          "You are about to assemble everything into one page — sources, values, needs, experiments, and a measured before-and-after. Treat it as a snapshot of a practice, not a trophy. Kamiya's needs erode as circumstances change; sources fade and are replaced; the map is meant to be re-read and redrawn.",
+          "That is why the journey ends with a retest of the Ikigai-9 scale you took at the very start. It is the same nine statements, answered by a slightly different life. The gap between the two sets of answers is yours to interpret — movement in any direction is information, not judgement.",
+        ],
+      },
+      {
+        kind: "scale",
+        title: "Ikigai-9 retest",
+        intro:
+          "The same nine statements from the first day. Answer as you find yourself now.",
+        target: "retest",
+        items: ikigai9ScaleItems,
       },
       {
         kind: "prompts",
-        title: "Placeholder — ikigai-9 retest",
-        intro: "Placeholder for M4.",
-        prompts: [{ id: "placeholder", label: "Placeholder prompt." }],
+        title: "What changed",
+        intro:
+          "Your baseline and retest scores appear on your map. Here, interpret them.",
+        prompts: [
+          {
+            id: "moved",
+            label: "Which answers moved most between the two tests — and what in your life does that reflect?",
+            multiline: true,
+          },
+          {
+            id: "needs",
+            label: "Looking at your needs ratings: which one need would change your days most if you strengthened it?",
+            multiline: true,
+          },
+        ],
+      },
+      {
+        kind: "prompts",
+        title: "Practice plan",
+        intro: "Close the loop: how this map stays alive.",
+        prompts: [
+          {
+            id: "cadence",
+            label: "When will you re-read your map — and when will you retake the Ikigai-9? Propose a real date.",
+            placeholder: "e.g. first Sunday of each month; retest in three months",
+          },
+          {
+            id: "strengthen",
+            label: "Which single experiment continues first, and what is its very next step?",
+            multiline: true,
+          },
+        ],
       },
     ],
   },
