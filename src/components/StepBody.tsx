@@ -266,7 +266,7 @@ function ScaleBody(props: {
         </For>
       </div>
       <ContinueRow
-        label={props.done ? "Update answer" : "Submit"}
+        label={props.done ? "Update answer" : "Complete this step"}
         variant={props.done ? "secondary" : "accent"}
         onClick={submit}
         hint={!ready() && attempted() ? "Answer every statement to continue." : undefined}

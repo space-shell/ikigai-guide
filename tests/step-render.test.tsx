@@ -164,7 +164,11 @@ describe("Step page: advancement re-renders content", () => {
       expect(input).not.toBeNull();
       input.click();
     }
-    clickButtonWithLabel("Submit");
+    // unified pre-completion label on the scale editor, accent variant
+    const scaleBtn = buttonWithLabel("Complete this step");
+    expect(scaleBtn).not.toBeNull();
+    expect(scaleBtn!.classList.contains("neu-button-accent")).toBe(true);
+    clickButtonWithLabel("Complete this step");
     await tick();
     expect(bodyText()).toContain("Stage complete");
     expect(bodyText()).toContain("Until next time");
