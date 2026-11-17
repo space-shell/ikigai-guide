@@ -30,14 +30,14 @@ export function JourneyMap() {
         </p>
         <div class="mt-5 flex items-center gap-3">
           <div
-            class="h-1.5 w-full rounded-sm bg-line"
+            class="neu-track h-1.5 w-full"
             role="progressbar"
             aria-label="Journey progress"
             aria-valuenow={overall.done}
             aria-valuemin={0}
             aria-valuemax={overall.total}
           >
-            <div class="h-1.5 rounded-sm bg-matcha" style={{ width: `${pct}%` }} />
+            <div class="h-full rounded-full bg-matcha" style={{ width: `${pct}%` }} />
           </div>
           <span class="text-sm text-ink-soft tabular-nums">
             {overall.done}/{overall.total}
@@ -53,21 +53,17 @@ export function JourneyMap() {
             const complete = stageComplete(index());
             const started = comp().done > 0 && !complete;
             const status = complete
-              ? { label: "Complete", cls: "text-matcha border-matcha/40" }
+              ? { label: "Complete", cls: "text-matcha" }
               : started
-                ? { label: "In progress", cls: "text-aizome border-aizome/40" }
+                ? { label: "In progress", cls: "text-aizome" }
                 : unlocked
-                  ? { label: "Ready", cls: "text-ink-soft border-line" }
-                  : { label: "Locked", cls: "text-ink-faint border-line" };
+                  ? { label: "Ready", cls: "text-ink-soft" }
+                  : { label: "Locked", cls: "text-ink-faint" };
             return (
               <li>
                 <button
                   type="button"
-                  class={`w-full rounded-md border bg-surface p-5 text-left transition-colors ${
-                    unlocked
-                      ? "border-line hover:border-aizome"
-                      : "border-line opacity-60"
-                  }`}
+                  class={`neu-raised w-full p-5 text-left ${unlocked ? "" : "opacity-50"}`}
                   onClick={() => open(index())}
                   aria-disabled={!unlocked}
                 >
@@ -81,14 +77,14 @@ export function JourneyMap() {
                         <p class="text-sm text-ink-soft">{stage.tagline}</p>
                       </div>
                     </div>
-                    <span class={`shrink-0 rounded-sm border px-2 py-0.5 text-xs ${status.cls}`}>
+                    <span class={`shrink-0 text-xs font-medium ${status.cls}`}>
                       {status.label}
                     </span>
                   </div>
                   <div class="mt-4 flex items-center gap-3">
-                    <div class="h-1 w-full rounded-sm bg-line" aria-hidden="true">
+                    <div class="neu-track h-1 w-full" aria-hidden="true">
                       <div
-                        class="h-1 rounded-sm bg-matcha"
+                        class="h-full rounded-full bg-matcha"
                         style={{
                           width: `${comp().total === 0 ? 0 : (comp().done / comp().total) * 100}%`,
                         }}

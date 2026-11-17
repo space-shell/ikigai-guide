@@ -25,7 +25,7 @@ export function Landing() {
         </p>
         <a
           href="#/journey"
-          class="mt-10 inline-block rounded-sm bg-aizome px-6 py-3 font-medium text-white transition-colors hover:bg-aizome-deep"
+          class="neu-button-accent mt-10 inline-block px-6 py-3 font-medium"
         >
           <Show when={started()} fallback="Begin the journey">
             Continue ({pct()}% complete)
@@ -33,8 +33,8 @@ export function Landing() {
         </a>
       </section>
 
-      <section class="mb-20 grid gap-10 sm:grid-cols-3">
-        <div>
+      <section class="mb-20 grid gap-6 sm:grid-cols-3">
+        <div class="neu-raised p-6">
           <h2 class="font-display text-lg">What it is</h2>
           <p class="mt-2 text-ink-soft">
             Ikigai is the everyday worth in daily living: people, pursuits,
@@ -42,14 +42,14 @@ export function Landing() {
             answer.
           </p>
         </div>
-        <div>
+        <div class="neu-raised p-6">
           <h2 class="font-display text-lg">What it isn't</h2>
           <p class="mt-2 text-ink-soft">
             Not the four-circle diagram. That graphic was drawn for a Spanish
             astrology-adjacent purpose model and rebranded in 2014.
           </p>
         </div>
-        <div>
+        <div class="neu-raised p-6">
           <h2 class="font-display text-lg">How it works</h2>
           <p class="mt-2 text-ink-soft">
             Eight stages of short, sourced exercises. Your answers build one
@@ -58,7 +58,7 @@ export function Landing() {
         </div>
       </section>
 
-      <section class="mb-16 border-t border-line pt-6">
+      <section class="mb-16 pt-2">
         <p class="text-sm text-ink-faint">
           No account, no analytics, no server. Everything you write stays in
           this browser, and you can export it any time.

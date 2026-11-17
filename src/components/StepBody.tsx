@@ -147,7 +147,7 @@ function PromptsBody(props: {
             {p.multiline ? (
               <textarea
                 id={`${props.stepId}-${p.id}`}
-                class="min-h-28 rounded-md border border-line bg-surface px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
+                class="neu-input min-h-28 text-ink"
                 placeholder={p.placeholder ?? "Write freely, or edit later."}
                 value={draft()[p.id] ?? ""}
                 onInput={(e) => update(p.id, e.currentTarget.value)}
@@ -156,7 +156,7 @@ function PromptsBody(props: {
               <input
                 id={`${props.stepId}-${p.id}`}
                 type="text"
-                class="rounded-md border border-line bg-surface px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
+                class="neu-input text-ink"
                 placeholder={p.placeholder ?? ""}
                 value={draft()[p.id] ?? ""}
                 onInput={(e) => update(p.id, e.currentTarget.value)}
@@ -215,7 +215,7 @@ function ScaleBody(props: {
       <div class="flex flex-col gap-6">
         <For each={props.step.items}>
           {(item) => (
-            <fieldset class="rounded-md border border-line bg-surface p-4">
+            <fieldset class="neu-raised p-5">
               <legend class="px-1 text-sm font-medium text-ink">{item.label}</legend>
               <div class="mt-1 flex flex-wrap items-center justify-between gap-3">
                 <span class="text-xs text-ink-faint">{item.minLabel}</span>
@@ -231,7 +231,7 @@ function ScaleBody(props: {
                           checked={draft()[item.id] === v}
                           onChange={() => set(item.id, v)}
                         />
-                        <span class="flex h-8 w-8 items-center justify-center rounded-sm border border-line text-sm text-ink-soft transition-colors peer-checked:border-aizome peer-checked:bg-aizome peer-checked:text-white">
+                        <span class="neu-tile flex h-8 w-8 items-center justify-center rounded-md text-sm text-ink-soft peer-checked:bg-aizome peer-checked:text-white peer-checked:shadow-[inset_2px_2px_4px_#c8c0b2,inset_-2px_-2px_4px_#ffffff]">
                           {v}
                         </span>
                       </label>
@@ -316,7 +316,7 @@ function ListBody(props: {
       </Show>
       <For each={entries()}>
         {(entry, index) => (
-          <div class="rounded-md border border-line bg-surface p-4">
+          <div class="neu-raised p-5">
             <div class="mb-3 flex items-center justify-between">
               <p class="text-sm font-medium text-ink-faint">
                 {props.step.entryNoun} {index() + 1}
@@ -349,7 +349,7 @@ function ListBody(props: {
                     {f.type === "textarea" ? (
                       <textarea
                         id={`${props.stepId}-${index()}-${f.id}`}
-                        class="min-h-20 rounded-md border border-line bg-paper px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
+                        class="neu-input min-h-20 text-ink"
                         placeholder={f.placeholder ?? ""}
                         value={entry[f.id] ?? ""}
                         onInput={(e) => update(index(), f.id, e.currentTarget.value)}
@@ -357,7 +357,7 @@ function ListBody(props: {
                     ) : f.type === "select" ? (
                       <select
                         id={`${props.stepId}-${index()}-${f.id}`}
-                        class="rounded-md border border-line bg-paper px-3 py-2 text-ink focus:border-aizome"
+                        class="neu-input text-ink"
                         value={entry[f.id] ?? ""}
                         onChange={(e) => update(index(), f.id, e.currentTarget.value)}
                       >
@@ -370,7 +370,7 @@ function ListBody(props: {
                       <input
                         id={`${props.stepId}-${index()}-${f.id}`}
                         type={f.type}
-                        class="rounded-md border border-line bg-paper px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
+                        class="neu-input text-ink"
                         placeholder={f.placeholder ?? ""}
                         value={entry[f.id] ?? ""}
                         onInput={(e) => update(index(), f.id, e.currentTarget.value)}
@@ -385,7 +385,7 @@ function ListBody(props: {
       </For>
 
       <Show when={props.suggestions && props.suggestions.length > 0}>
-        <div class="rounded-md border border-line bg-surface p-4">
+        <div class="neu-raised p-5">
           <p class="kicker mb-3">From your earlier answers</p>
           <div class="flex flex-wrap gap-2">
             <For each={props.suggestions}>
@@ -394,10 +394,12 @@ function ListBody(props: {
                 return (
                   <button
                     type="button"
-                    class="rounded-sm border px-3 py-1.5 text-sm transition-colors"
+                    class="rounded-md px-3 py-1.5 text-sm transition-all"
                     classList={{
-                      "border-aizome text-white bg-aizome": used(),
-                      "border-line text-ink-soft hover:border-aizome hover:text-aizome": !used(),
+                      "bg-aizome text-white shadow-[inset_2px_2px_4px_rgba(0,0,0,0.25)]":
+                        used(),
+                      "bg-paper text-ink-soft shadow-[3px_3px_6px_#c8c0b2,-3px_-3px_6px_#ffffff] hover:text-aizome":
+                        !used(),
                     }}
                     disabled={used() || entries().length >= max}
                     onClick={() => addSeed(s)}
@@ -418,7 +420,7 @@ function ListBody(props: {
         <Show when={entries().length < max}>
           <button
             type="button"
-            class="rounded-sm border border-aizome px-3 py-1.5 text-sm font-medium text-aizome transition-colors hover:bg-aizome hover:text-white"
+            class="neu-button px-3 py-1.5 text-sm font-medium text-aizome"
             onClick={add}
           >
             Add {props.step.entryNoun.toLowerCase()}
@@ -495,11 +497,11 @@ function PickBody(props: {
           {(opt) => (
             <button
               type="button"
-              class={`rounded-md border px-4 py-3 text-left transition-colors ${
-                selected().includes(opt.id)
-                  ? "border-aizome bg-aizome text-white"
-                  : "border-line bg-surface text-ink hover:border-aizome"
-              }`}
+              class={`neu-raised px-4 py-3 text-left transition-all`}
+              classList={{
+                "bg-aizome text-white": selected().includes(opt.id),
+                "text-ink": !selected().includes(opt.id),
+              }}
               role={props.step.multi ? "checkbox" : "radio"}
               aria-checked={selected().includes(opt.id)}
               onClick={() => toggle(opt.id)}
@@ -527,7 +529,7 @@ function PickBody(props: {
             </label>
             <textarea
               id={`${props.stepId}-${ft().id}`}
-              class="min-h-20 rounded-md border border-line bg-surface px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
+              class="neu-input min-h-20 text-ink"
               value={free()[ft().id] ?? ""}
               onInput={(e) => updateFree(ft().id, e.currentTarget.value)}
             />
@@ -549,7 +551,7 @@ function ContinueRow(props: { label: string; onClick: () => void; hint?: string 
     <div class="mt-2 flex flex-col gap-2">
       <button
         type="button"
-        class="self-start rounded-sm bg-aizome px-6 py-2.5 font-medium text-white transition-colors hover:bg-aizome-deep"
+        class="neu-button-accent self-start px-6 py-2.5 font-medium"
         onClick={props.onClick}
       >
         {props.label}

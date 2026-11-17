@@ -63,13 +63,13 @@ export function Map() {
         <div class="mt-4 flex gap-3 print:hidden">
           <button
             type="button"
-            class="rounded-sm bg-aizome px-4 py-2 text-sm font-medium text-white hover:bg-aizome-deep"
+            class="neu-button-accent px-4 py-2 text-sm font-medium"
             onClick={() => window.print()}
           >
             Print this map
           </button>
           <a
-            class="rounded-sm border border-line px-4 py-2 text-sm font-medium text-ink-soft hover:border-aizome hover:text-aizome"
+            class="neu-button px-4 py-2 text-sm font-medium text-ink-soft"
             href="#/settings"
           >
             Export data
@@ -98,7 +98,7 @@ export function Map() {
           <ul class="flex flex-col gap-3">
             <For each={sources()}>
               {(s) => (
-                <li class="rounded-md border border-line bg-surface p-4">
+                <li class="neu-raised p-5">
                   <p class="font-medium">{s.source}</p>
                   <Show when={s.feelings}>
                     <p class="mt-1 text-sm text-ink-soft">Feels like: {s.feelings}</p>
@@ -133,9 +133,9 @@ export function Map() {
                     <span class="w-44 shrink-0 text-sm text-ink-soft capitalize">
                       {key.replace(/-/g, " ")}
                     </span>
-                    <div class="h-2 w-full rounded-sm bg-line" aria-hidden="true">
+                    <div class="neu-track h-2 w-full" aria-hidden="true">
                       <div
-                        class="h-2 rounded-sm bg-matcha"
+                        class="h-full rounded-full bg-matcha"
                         style={{ width: `${(v / 4) * 100}%` }}
                       />
                     </div>
@@ -159,7 +159,7 @@ export function Map() {
             <div class="flex flex-wrap gap-2">
               <For each={v().selected}>
                 {(id) => (
-                  <span class="rounded-sm border border-aizome/40 px-3 py-1 text-sm text-aizome">
+                  <span class="rounded-md bg-aizome/10 px-3 py-1 text-sm text-aizome">
                     {valueLabel(id)}
                   </span>
                 )}
@@ -197,7 +197,7 @@ export function Map() {
           <ul class="flex flex-col gap-3">
             <For each={experiments()}>
               {(e) => (
-                <li class="rounded-md border border-line bg-surface p-4 text-sm">
+                <li class="neu-raised p-5 text-sm">
                   <p class="font-medium text-ink">
                     {e.source} <span class="text-ink-faint">{e.minimum}</span>
                   </p>
@@ -217,7 +217,7 @@ export function Map() {
 
 function Section(props: { title: string; children: import("solid-js").JSX.Element }) {
   return (
-    <section class="mb-10 border-t border-line pt-6">
+    <section class="mb-10">
       <h2 class="font-display mb-4 text-xl">{props.title}</h2>
       {props.children}
     </section>
@@ -240,7 +240,7 @@ function ScoreDelta(props: {
       }
     >
       {(b) => (
-        <div class="rounded-md border border-line bg-surface p-4">
+        <div class="neu-raised p-5">
           <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <Score label="Emotional" b={b().emotional} r={props.retest?.emotional} />
             <Score label="Growth" b={b().growth} r={props.retest?.growth} />

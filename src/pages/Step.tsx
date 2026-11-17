@@ -116,7 +116,7 @@ export function Step(props: { route: Accessor<Route> }) {
                   <Show when={v.done}> · completed, you can revise and resubmit</Show>
                 </p>
                 <div
-                  class="mt-1 h-1 w-full rounded-sm bg-line"
+                  class="neu-track mt-1 h-1.5 w-full"
                   role="progressbar"
                   aria-label={`Stage ${v.si + 1} progress`}
                   aria-valuenow={v.ti + 1}
@@ -124,7 +124,7 @@ export function Step(props: { route: Accessor<Route> }) {
                   aria-valuemax={v.stepsInStage}
                 >
                   <div
-                    class="h-1 rounded-sm bg-matcha"
+                    class="h-full rounded-full bg-matcha"
                     style={{ width: `${((v.ti + 1) / v.stepsInStage) * 100}%` }}
                   />
                 </div>
@@ -141,7 +141,7 @@ export function Step(props: { route: Accessor<Route> }) {
                   />
                 </div>
 
-                <div class="mt-10 border-t border-line pt-4">
+                <div class="mt-10 pt-4">
                   <button
                     type="button"
                     class="text-sm text-ink-faint underline-offset-4 hover:text-ink hover:underline"
@@ -186,7 +186,7 @@ function StageEnd(props: { stageIndex: number; onContinue: () => void }) {
         <p class="mt-2 text-ink-soft">{stage.tagline}</p>
       </div>
 
-      <div class="rounded-md border border-matcha/40 bg-surface p-6">
+      <div class="neu-raised p-6">
         <p class="kicker mb-2">Until next time</p>
         <p class="text-ink-soft">One small real-world action before the next stage:</p>
         <p class="font-display mt-2 text-xl">{stage.action}</p>
@@ -197,7 +197,7 @@ function StageEnd(props: { stageIndex: number; onContinue: () => void }) {
           when={hasNext}
           fallback={
             <a
-              class="rounded-sm bg-aizome px-6 py-2.5 font-medium text-white hover:bg-aizome-deep"
+              class="neu-button-accent px-6 py-2.5 font-medium"
               href="#/map"
             >
               View your map
@@ -206,14 +206,14 @@ function StageEnd(props: { stageIndex: number; onContinue: () => void }) {
         >
           <button
             type="button"
-            class="rounded-sm bg-aizome px-6 py-2.5 font-medium text-white hover:bg-aizome-deep"
+            class="neu-button-accent px-6 py-2.5 font-medium"
             onClick={props.onContinue}
           >
             Next stage
           </button>
         </Show>
         <a
-          class="rounded-sm border border-line px-6 py-2.5 font-medium text-ink-soft hover:border-aizome hover:text-aizome"
+          class="neu-button px-6 py-2.5 font-medium text-ink-soft"
           href="#/journey"
         >
           Journey overview

@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
 /*
-  Design direction: "Scandinese" — Scandinavian x Japanese calm.
-  Warm paper neutrals, one indigo accent (aizome), vermilion (shu) used
-  sparingly, matcha green for progress. Generous whitespace, square-ish
-  corners, serif display over sans body.
+  Design direction: "Scandinese" neumorphic, after the Doodat reference
+  (apps/web/tailwind.config.ts + src/index.css). Warm cream surface with soft
+  dual (light/dark) shadows, inset wells for inputs, rounded surfaces, quiet
+  transitions. Accent is the pastelled indigo (aizome); matcha green marks
+  progress.
 */
 @theme {
-  --color-paper: #f7f5f0;
-  --color-surface: #ffffff;
+  --color-paper: #f5f0e8;
+  --color-surface: #f5f0e8;
+  --color-well: #ede8de;
+  --color-shadow-dark: #c8c0b2;
+  --color-shadow-light: #ffffff;
   --color-ink: #1c1b18;
   --color-ink-soft: #57544e;
   --color-ink-faint: #6e6a61;
@@ -24,8 +28,8 @@
   --font-display:
     "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
 
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-card: 24px;
+  --radius-button: 16px;
 
   --ease-quiet: cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -52,7 +56,7 @@
   :focus-visible {
     outline: 2px solid var(--color-aizome);
     outline-offset: 2px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-button);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -63,6 +67,146 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  /* Raised surface (Doodat .neu-raised) */
+  .neu-raised {
+    background-color: var(--color-paper);
+    border-radius: var(--radius-card);
+    box-shadow:
+      6px 6px 12px var(--color-shadow-dark),
+      -6px -6px 12px var(--color-shadow-light);
+  }
+
+  /* Pressed-in surface (Doodat .neu-inset) */
+  .neu-inset {
+    background-color: var(--color-well);
+    border-radius: var(--radius-button);
+    box-shadow:
+      inset 3px 3px 6px var(--color-shadow-dark),
+      inset -3px -3px 6px var(--color-shadow-light);
+  }
+
+  /* Embossed button (Doodat .neu-button) */
+  .neu-button {
+    background-color: var(--color-paper);
+    border-radius: var(--radius-button);
+    box-shadow:
+      4px 4px 8px var(--color-shadow-dark),
+      -4px -4px 8px var(--color-shadow-light);
+    transition:
+      box-shadow 0.12s ease,
+      transform 0.12s ease;
+  }
+  .neu-button:hover {
+    box-shadow:
+      5px 5px 10px var(--color-shadow-dark),
+      -5px -5px 10px var(--color-shadow-light);
+  }
+  .neu-button:active {
+    box-shadow:
+      inset 2px 2px 4px var(--color-shadow-dark),
+      inset -2px -2px 4px var(--color-shadow-light);
+    transform: translateY(1px);
+  }
+
+  /* Accent variant: pastel indigo fill, same shadow mechanics */
+  .neu-button-accent {
+    background-color: var(--color-aizome);
+    color: #ffffff;
+    border-radius: var(--radius-button);
+    box-shadow:
+      4px 4px 8px var(--color-shadow-dark),
+      -4px -4px 8px var(--color-shadow-light);
+    transition:
+      box-shadow 0.12s ease,
+      transform 0.12s ease,
+      background-color 0.12s ease;
+  }
+  .neu-button-accent:hover {
+    background-color: var(--color-aizome-deep);
+    box-shadow:
+      5px 5px 10px var(--color-shadow-dark),
+      -5px -5px 10px var(--color-shadow-light);
+  }
+  .neu-button-accent:active {
+    transform: translateY(1px);
+    box-shadow:
+      2px 2px 4px var(--color-shadow-dark),
+      -2px -2px 4px var(--color-shadow-light);
+  }
+
+  /* Inset track for progress bars */
+  .neu-track {
+    background-color: var(--color-well);
+    border-radius: 9999px;
+    box-shadow:
+      inset 2px 2px 4px var(--color-shadow-dark),
+      inset -2px -2px 4px var(--color-shadow-light);
+    overflow: hidden;
+  }
+
+  /* Inset text field */
+  .neu-input {
+    background-color: var(--color-well);
+    border: 0;
+    border-radius: var(--radius-button);
+    box-shadow:
+      inset 3px 3px 6px var(--color-shadow-dark),
+      inset -3px -3px 6px var(--color-shadow-light);
+    padding: 0.5rem 0.75rem;
+    color: var(--color-ink);
+  }
+  .neu-input::placeholder {
+    color: var(--color-ink-faint);
+  }
+
+  /* Small raised tile (scale value chips) */
+  .neu-tile {
+    background-color: var(--color-paper);
+    box-shadow:
+      3px 3px 6px var(--color-shadow-dark),
+      -3px -3px 6px var(--color-shadow-light);
+    transition:
+      box-shadow 0.12s ease,
+      background-color 0.12s ease;
+  }
+  .neu-tile-pressed {
+    box-shadow:
+      inset 2px 2px 4px var(--color-shadow-dark),
+      inset -2px -2px 4px var(--color-shadow-light);
+  }
+
+  /* 200ms fade for route changes (Doodat .neu-fade-in) */
+  .neu-fade-in {
+    animation: neu-fade-in 200ms ease-out;
+  }
+  @keyframes neu-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Small uppercase section label; Scandinavian editorial feel */
+  .kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  /* Decorative vertical Japanese text accent; used sparingly */
+  .vertical-ja {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.35em;
+    font-size: 0.75rem;
+    color: var(--color-ink-faint);
+    user-select: none;
   }
 }
 
@@ -78,26 +222,11 @@
     background: #fff;
   }
 
+  * {
+    box-shadow: none !important;
+  }
+
   section {
     break-inside: avoid;
-  }
-}
-
-@layer components {
-  /* Small uppercase section label — Scandinavian editorial feel */
-  .kicker {
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-ink-faint);
-  }
-
-  /* Decorative vertical Japanese text accent — used sparingly */
-  .vertical-ja {
-    writing-mode: vertical-rl;
-    letter-spacing: 0.35em;
-    font-size: 0.75rem;
-    color: var(--color-ink-faint);
-    user-select: none;
   }
 }

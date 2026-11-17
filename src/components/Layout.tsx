@@ -4,7 +4,7 @@ import { type JSX } from "solid-js";
 export function Layout(props: { children: JSX.Element }) {
   return (
     <div class="min-h-dvh">
-      <header class="border-b border-line">
+      <header>
         <div class="mx-auto flex max-w-prose items-center justify-between px-6 py-4">
           <a class="font-display text-base" href="#/">
             ikigai <span class="text-ink-faint" lang="ja">生きがい</span>
@@ -22,7 +22,7 @@ export function Layout(props: { children: JSX.Element }) {
           </nav>
         </div>
       </header>
-      <main class="mx-auto max-w-prose px-6 py-10">{props.children}</main>
+      <main class="neu-fade-in mx-auto max-w-prose px-6 py-10">{props.children}</main>
     </div>
   );
 }

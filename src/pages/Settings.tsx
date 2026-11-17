@@ -44,7 +44,7 @@ export function Settings() {
         </p>
       </div>
 
-      <section class="mb-8 border-t border-line pt-6">
+      <section class="mb-8">
         <h2 class="font-display mb-3 text-xl">Export</h2>
         <p class="mb-3 text-sm text-ink-soft">
           Downloads everything (answers, progress, baseline and retest) as one
@@ -52,14 +52,14 @@ export function Settings() {
         </p>
         <button
           type="button"
-          class="rounded-sm bg-aizome px-4 py-2 text-sm font-medium text-white hover:bg-aizome-deep"
+          class="neu-button-accent px-4 py-2 text-sm font-medium"
           onClick={download}
         >
           Download export
         </button>
       </section>
 
-      <section class="mb-8 border-t border-line pt-6">
+      <section class="mb-8">
         <h2 class="font-display mb-3 text-xl">Import</h2>
         <p class="mb-3 text-sm text-ink-soft">
           Replaces the current journey state with the file's contents.
@@ -67,7 +67,7 @@ export function Settings() {
         <input
           type="file"
           accept="application/json,.json"
-          class="block text-sm text-ink-soft file:mr-3 file:rounded-sm file:border-0 file:bg-aizome file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-aizome-deep"
+          class="block text-sm text-ink-soft file:mr-3 file:rounded-[16px] file:border-0 file:bg-aizome file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-aizome-deep"
           onChange={(e) => onFile(e.currentTarget.files?.[0])}
         />
         <Show when={importMsg()}>
@@ -84,7 +84,7 @@ export function Settings() {
         </Show>
       </section>
 
-      <section class="border-t border-line pt-6">
+      <section class="">
         <h2 class="font-display mb-3 text-xl">Reset</h2>
         <p class="mb-3 text-sm text-ink-soft">
           Erases all saved progress in this browser. Your exports are unaffected.
@@ -93,14 +93,14 @@ export function Settings() {
           <input
             type="text"
             placeholder="type RESET to confirm"
-            class="w-56 rounded-md border border-line bg-surface px-3 py-2 text-sm focus:border-aizome"
+            class="neu-input w-56 text-sm"
             value={resetConfirm()}
             onInput={(e) => setResetConfirm(e.currentTarget.value)}
           />
           <button
             type="button"
             disabled={resetConfirm().trim().toUpperCase() !== "RESET"}
-            class="rounded-sm bg-shu px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
+            class="rounded-[16px] bg-shu px-4 py-2 text-sm font-medium text-white shadow-[4px_4px_8px_#c8c0b2,-4px_-4px_8px_#ffffff] transition-all active:translate-y-px disabled:cursor-not-allowed disabled:opacity-40"
             onClick={() => {
               resetJourney();
               setResetConfirm("");
