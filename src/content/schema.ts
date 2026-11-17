@@ -64,6 +64,12 @@ export interface ListStep {
   minEntries?: number;
   maxEntries?: number;
   fields: ListField[];
+  /**
+   * Pull candidate values from earlier steps to offer as one-click entries.
+   * Works with list steps (entries are scanned for `field`) and prompts
+   * steps (the answer string for `field`).
+   */
+  seedFrom?: { stepId: string; field: string; targetField: string }[];
 }
 
 export interface PickOption {

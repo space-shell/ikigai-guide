@@ -1,4 +1,5 @@
 import { createMemo, createSignal, For, Show } from "solid-js";
+import { suggestionsFor, type SeedSuggestion } from "../state/seeds";
 import type {
   ListStep,
   PickStep,
@@ -56,6 +57,7 @@ export function StepBody(props: StepBodyProps) {
           initial={(props.initial ?? { entries: [] }) as {
             entries: Record<string, string>[];
           }}
+          suggestions={suggestionsFor(props.step)}
           onDraft={props.onDraft}
           onComplete={(a) => props.onComplete(a)}
         />
@@ -258,6 +260,7 @@ function ListBody(props: {
   step: ListStep;
   stepId: string;
   initial: { entries: Record<string, string>[] };
+  suggestions?: SeedSuggestion[];
   onDraft: (a: { entries: Record<string, string>[] }) => void;
   onComplete: (a: { entries: Record<string, string>[] }) => void;
 }) {
@@ -291,6 +294,12 @@ function ListBody(props: {
 
   const add = () => push([...entries(), {}]);
   const remove = (index: number) => push(entries().filter((_, i) => i !== index));
+
+  const usedSuggestions = createMemo(() => new Set(entries().map((e) => JSON.stringify(e))));
+  const addSeed = (s: SeedSuggestion) => {
+    if (entries().length >= max) return;
+    push([...entries(), { [s.targetField]: s.value }]);
+  };
 
   const submit = () => {
     if (!ready()) {
@@ -374,6 +383,36 @@ function ListBody(props: {
           </div>
         )}
       </For>
+
+      <Show when={props.suggestions && props.suggestions.length > 0}>
+        <div class="rounded-md border border-line bg-surface p-4">
+          <p class="kicker mb-3">From your earlier answers</p>
+          <div class="flex flex-wrap gap-2">
+            <For each={props.suggestions}>
+              {(s) => {
+                const used = () => usedSuggestions().has(JSON.stringify({ [s.targetField]: s.value }));
+                return (
+                  <button
+                    type="button"
+                    class="rounded-sm border px-3 py-1.5 text-sm transition-colors"
+                    classList={{
+                      "border-aizome text-white bg-aizome": used(),
+                      "border-line text-ink-soft hover:border-aizome hover:text-aizome": !used(),
+                    }}
+                    disabled={used() || entries().length >= max}
+                    onClick={() => addSeed(s)}
+                  >
+                    {s.value}
+                  </button>
+                );
+              }}
+            </For>
+          </div>
+          <p class="mt-2 text-xs text-ink-faint">
+            Click to add one as an entry — or ignore them and write freely.
+          </p>
+        </div>
+      </Show>
 
       <div class="flex items-center justify-between">
         <Show when={entries().length < max}>

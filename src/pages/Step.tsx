@@ -3,7 +3,7 @@ import type { Accessor } from "solid-js";
 import type { Route } from "../router";
 import { navigate } from "../router";
 import { STAGES } from "../content/journey";
-import { stepId, type ScaleStep, type Step as StepModel } from "../content/schema";
+import { stepId, type Step as StepModel } from "../content/schema";
 import {
   answerFor,
   completeStep,
