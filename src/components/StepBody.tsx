@@ -29,11 +29,7 @@ export function StepBody(props: StepBodyProps) {
   return (
     <>
       <Show when={props.step.kind === "teach"}>
-        <TeachBody
-          step={props.step as TeachStep}
-          done={props.done}
-          onComplete={() => props.onComplete(null)}
-        />
+        <TeachBody step={props.step as TeachStep} />
       </Show>
       <Show when={props.step.kind === "prompts"}>
         <PromptsBody
@@ -85,11 +81,7 @@ export function StepBody(props: StepBodyProps) {
   );
 }
 
-function TeachBody(props: {
-  step: TeachStep;
-  done: boolean;
-  onComplete: () => void;
-}) {
+function TeachBody(props: { step: TeachStep }) {
   return (
     <section class="flex flex-col gap-6">
       <Show when={props.step.bullets}>
@@ -102,11 +94,8 @@ function TeachBody(props: {
       <For each={props.step.paragraphs}>
         {(p) => <p class="text-ink-soft">{p}</p>}
       </For>
-      {/* Teach steps are read-only: no submit in revise mode. Advancement is
-          handled by the footer "Next step" or the stage-end view. */}
-      <Show when={!props.done}>
-        <ContinueRow label="Continue" variant="accent" onClick={() => props.onComplete()} />
-      </Show>
+      {/* Teach steps are read-only: no submit button in any state. The footer
+          "Next step" / "Next stage" marks the step complete on advance. */}
     </section>
   );
 }

@@ -155,13 +155,26 @@ export function Step(props: { route: Accessor<Route> }) {
                   >
                     ← Previous
                   </button>
-                  <Show when={v.done && v.ti < v.stepsInStage - 1}>
+                  <Show
+                    when={v.step.kind === "teach" || (v.done && v.ti < v.stepsInStage - 1)}
+                  >
                     <button
                       type="button"
                       class="neu-button-accent px-5 py-2 text-sm font-medium"
-                      onClick={() => navigate(`#/journey/${v.si}/${v.ti + 1}`)}
+                      onClick={() => {
+                        // read-only teach steps mark complete as a side effect
+                        // of advancing
+                        if (v.step.kind === "teach" && !v.done) {
+                          handleComplete(v, null);
+                        }
+                        if (v.ti < v.stepsInStage - 1) {
+                          navigate(`#/journey/${v.si}/${v.ti + 1}`);
+                        } else {
+                          goNextStage(v);
+                        }
+                      }}
                     >
-                      Next step →
+                      {v.ti < v.stepsInStage - 1 ? "Next step →" : "Next stage"}
                     </button>
                   </Show>
                 </div>

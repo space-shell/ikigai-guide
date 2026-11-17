@@ -14,7 +14,7 @@ import { createSignal } from "solid-js";
 import type { Route } from "../src/router";
 import { Step } from "../src/pages/Step";
 import { STAGES } from "../src/content/journey";
-import { completeStep, resetJourney } from "../src/state/store";
+import { journey, completeStep, resetJourney } from "../src/state/store";
 
 type DelegatedElement = HTMLElement & { [key: string]: unknown };
 
@@ -31,9 +31,10 @@ afterEach(() => {
   dispose = undefined;
   document.body.innerHTML = "";
   localStorage.clear();
+  resetJourney();
 });
 
-const tick = () => new Promise<void>((r) => setTimeout(r, 0));
+const tick = (ms = 25) => new Promise<void>((r) => setTimeout(r, ms));
 
 function bodyText(): string {
   return document.body.textContent ?? "";
@@ -77,33 +78,41 @@ describe("Step page: advancement re-renders content", () => {
     expect(bodyText()).toContain("Psychiatrist Kamiya Mieko");
     expect(bodyText()).not.toContain("Andrés Zuzunaga drew it");
 
-    // uncompleted teach step: "Continue" on the accent variant, no Next button
-    const continueBtn = buttonWithLabel("Continue");
-    expect(continueBtn).not.toBeNull();
-    expect(continueBtn!.classList.contains("neu-button-accent")).toBe(true);
-    expect(continueBtn!.classList.contains("neu-button")).toBe(false);
-    expect(buttonWithLabel("Next step →")).toBeNull();
-
-    // completed teach step: read-only, NO in-editor submit button at all;
-    // the footer "Next step" remains the only accent primary
-    clickButtonWithLabel("Continue");
-    await tick();
+    // teach steps have NO submit button in any state
     expect(buttonWithLabel("Continue")).toBeNull();
     expect(buttonWithLabel("Update answer")).toBeNull();
     expect(buttonWithLabel("Complete this step")).toBeNull();
-    const nextAfterTeach = buttonWithLabel("Next step →");
-    expect(nextAfterTeach).not.toBeNull();
-    expect(nextAfterTeach!.classList.contains("neu-button-accent")).toBe(true);
-    expect(bodyText()).toContain("· completed");
-    expect(bodyText()).not.toContain("revise and resubmit");
-    expect(bodyText()).toContain("Psychiatrist Kamiya Mieko");
 
-    // advance: teach step 0 -> teach step 1
+    // footer "Next step" is present pre-completion (accent) on teach steps
+    const nextTeachPre = buttonWithLabel("Next step →");
+    expect(nextTeachPre).not.toBeNull();
+    expect(nextTeachPre!.classList.contains("neu-button-accent")).toBe(true);
+
+    // clicking Next from an uncompleted teach step auto-completes and advances
+    clickButtonWithLabel("Next step →");
+    await tick();
+    expect(journey.steps["0-0"]).toBeDefined();
+    expect(location.hash).toBe("#/journey/0/1");
+    // jsdom does not fire hashchange on location.hash assignment, so advance
+    // the route signal the way main.tsx's hashchange handler would
     setRoute({ name: "step", stage: 0, step: 1 });
     await tick();
     expect(document.querySelector("h1")?.textContent).toContain("What it isn't");
     expect(bodyText()).toContain("Andrés Zuzunaga drew it");
     expect(bodyText()).not.toContain("Psychiatrist Kamiya Mieko");
+
+    // revisit the completed teach step: read-only, "· completed" copy, Next present
+    setRoute({ name: "step", stage: 0, step: 0 });
+    await tick();
+    expect(buttonWithLabel("Continue")).toBeNull();
+    expect(buttonWithLabel("Update answer")).toBeNull();
+    expect(buttonWithLabel("Complete this step")).toBeNull();
+    const nextRevisit = buttonWithLabel("Next step →");
+    expect(nextRevisit).not.toBeNull();
+    expect(nextRevisit!.classList.contains("neu-button-accent")).toBe(true);
+    expect(bodyText()).toContain("· completed");
+    expect(bodyText()).not.toContain("revise and resubmit");
+    expect(bodyText()).toContain("Psychiatrist Kamiya Mieko");
 
     // advance: teach -> prompts editor (different exercise kind)
     setRoute({ name: "step", stage: 0, step: 3 });
