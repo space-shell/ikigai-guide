@@ -23,7 +23,7 @@ export function Settings() {
     if (!file) return;
     const text = await file.text();
     if (importJson(text)) {
-      setImportMsg("Imported — your journey state was replaced.");
+      setImportMsg("Imported. Your journey state was replaced.");
     } else {
       setImportMsg(
         "That file isn't a valid ikigai-guide export (wrong shape or version).",
@@ -47,7 +47,7 @@ export function Settings() {
       <section class="mb-8 border-t border-line pt-6">
         <h2 class="font-display mb-3 text-xl">Export</h2>
         <p class="mb-3 text-sm text-ink-soft">
-          Downloads everything — answers, progress, baseline and retest — as one
+          Downloads everything (answers, progress, baseline and retest) as one
           JSON file. Keep it anywhere; import it on any device.
         </p>
         <button

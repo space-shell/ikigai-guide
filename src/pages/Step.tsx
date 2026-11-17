@@ -85,7 +85,7 @@ export function Step(props: { route: Accessor<Route> }) {
                 <p class="kicker">Locked</p>
                 <h1 class="font-display text-2xl">{v.stageTitle}</h1>
                 <p class="text-ink-soft">
-                  Finish the earlier stages first — each one feeds this one.
+                  Finish the earlier stages first; each one feeds this one.
                 </p>
                 <a class="text-aizome underline-offset-4 hover:underline" href="#/journey">
                   Back to the journey
@@ -113,7 +113,7 @@ export function Step(props: { route: Accessor<Route> }) {
                 </p>
                 <p class="text-sm text-ink-faint">
                   Step {v.ti + 1} of {v.stepsInStage}
-                  <Show when={v.done}> · completed — you can revise and resubmit</Show>
+                  <Show when={v.done}> · completed, you can revise and resubmit</Show>
                 </p>
                 <div
                   class="mt-1 h-1 w-full rounded-sm bg-line"

@@ -31,7 +31,7 @@ export function Landing() {
             feel worth living.
           </h1>
           <p class="mt-6 text-lg text-ink-soft">
-            A quiet, thorough process for discovering your ikigai — staged
+            A quiet, thorough process for discovering your ikigai: staged
             exercises, honest sourcing, saved progress. Not a quiz, not an
             article.
           </p>
@@ -40,7 +40,7 @@ export function Landing() {
             class="mt-10 inline-block rounded-sm bg-aizome px-6 py-3 font-medium text-white transition-colors hover:bg-aizome-deep"
           >
             <Show when={started()} fallback="Begin the journey">
-              Continue — {pct()}% complete
+              Continue ({pct()}% complete)
             </Show>
           </a>
         </section>
@@ -50,7 +50,7 @@ export function Landing() {
             <h2 class="font-display text-lg">What it is</h2>
             <p class="mt-2 text-ink-soft">
               Ikigai is the everyday worth in daily living: people, pursuits,
-              places, memories — usually several small ones, not one grand
+              places, memories; usually several small ones, not one grand
               answer.
             </p>
           </div>

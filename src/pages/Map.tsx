@@ -57,8 +57,8 @@ export function Map() {
         <p class="kicker mb-2">The artifact</p>
         <h1 class="font-display text-3xl">My Ikigai Map</h1>
         <p class="mt-2 text-ink-soft">
-          Everything you wrote, on one page. Re-read it; redraw it as your life
-          changes.
+          Everything you wrote, on one page. Re-read it and redraw it as your
+          life changes.
         </p>
         <div class="mt-4 flex gap-3 print:hidden">
           <button
@@ -86,7 +86,7 @@ export function Map() {
           <blockquote class="border-l-2 border-aizome pl-4 font-display text-lg text-ink-soft">
             “{opening()}”
           </blockquote>
-          <p class="mt-2 text-xs text-ink-faint">— you, on day one</p>
+          <p class="mt-2 text-xs text-ink-faint">Your answer from day one.</p>
         </Section>
       </Show>
 
@@ -178,7 +178,7 @@ export function Map() {
             <For each={fears()}>
               {(f) => (
                 <li class="text-sm text-ink-soft">
-                  <span class="font-medium text-ink">{f.fear}</span> — {f.shows}{" "}
+                  <span class="font-medium text-ink">{f.fear}</span> {f.shows}{" "}
                   <Show when={f.counter}>
                     <span class="text-aizome">→ {f.counter}</span>
                   </Show>
@@ -199,7 +199,7 @@ export function Map() {
               {(e) => (
                 <li class="rounded-md border border-line bg-surface p-4 text-sm">
                   <p class="font-medium text-ink">
-                    {e.source} <span class="text-ink-faint">— {e.minimum}</span>
+                    {e.source} <span class="text-ink-faint">{e.minimum}</span>
                   </p>
                   <p class="mt-1 text-ink-soft">
                     When: {e.when}
@@ -253,7 +253,7 @@ function ScoreDelta(props: {
           </div>
           <Show when={!props.retest}>
             <p class="mt-3 text-xs text-ink-faint">
-              Retest pending — complete the final stage to see your change.
+              Retest pending. Complete the final stage to see your change.
             </p>
           </Show>
         </div>

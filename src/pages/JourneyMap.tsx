@@ -26,7 +26,7 @@ export function JourneyMap() {
         <h1 class="font-display text-3xl">Eight stages to your ikigai</h1>
         <p class="mt-2 text-ink-soft">
           Each stage ends with one small real-world action. Stages open in
-          order — what you write early feeds what you write later.
+          order. What you write early feeds what you write later.
         </p>
         <div class="mt-5 flex items-center gap-3">
           <div

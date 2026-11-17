@@ -13,7 +13,7 @@ export interface StepBodyProps {
   step: Step;
   stepId: string;
   initial: unknown;
-  /** Autosave drafts — does not mark the step complete. */
+  /** Autosave drafts; does not mark the step complete. */
   onDraft: (answer: unknown) => void;
   /** Finish the step: marks completion and stores the final answer. */
   onComplete: (answer: unknown) => void;
@@ -148,7 +148,7 @@ function PromptsBody(props: {
               <textarea
                 id={`${props.stepId}-${p.id}`}
                 class="min-h-28 rounded-md border border-line bg-surface px-3 py-2 text-ink placeholder:text-ink-faint focus:border-aizome"
-                placeholder={p.placeholder ?? "Write freely — you can edit later."}
+                placeholder={p.placeholder ?? "Write freely, or edit later."}
                 value={draft()[p.id] ?? ""}
                 onInput={(e) => update(p.id, e.currentTarget.value)}
               />
@@ -222,7 +222,7 @@ function ScaleBody(props: {
                 <div class="flex gap-2">
                   <For each={[...SCALE_VALUES]}>
                     {(v) => (
-                      <label class="cursor-pointer" aria-label={`${item.label} — ${v} of 4`}>
+                      <label class="cursor-pointer" aria-label={`${item.label}, ${v} of 4`}>
                         <input
                           type="radio"
                           class="peer sr-only"
@@ -409,7 +409,7 @@ function ListBody(props: {
             </For>
           </div>
           <p class="mt-2 text-xs text-ink-faint">
-            Click to add one as an entry — or ignore them and write freely.
+            Click to add one as an entry, or ignore them and write freely.
           </p>
         </div>
       </Show>
