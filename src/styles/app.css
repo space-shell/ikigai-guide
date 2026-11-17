@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+  Design direction: "Scandinese" — Scandinavian x Japanese calm.
+  Warm paper neutrals, one indigo accent (aizome), vermilion (shu) used
+  sparingly, matcha green for progress. Generous whitespace, square-ish
+  corners, serif display over sans body.
+*/
+@theme {
+  --color-paper: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #57544e;
+  --color-ink-faint: #8b867c;
+  --color-line: #e4e0d6;
+  --color-aizome: #33547b;
+  --color-aizome-deep: #27405e;
+  --color-shu: #b45338;
+  --color-matcha: #6e8b6a;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  --font-display:
+    "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --ease-quiet: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-aizome) 18%, white);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-aizome);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Small uppercase section label — Scandinavian editorial feel */
+  .kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+  }
+
+  /* Decorative vertical Japanese text accent — used sparingly */
+  .vertical-ja {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.35em;
+    font-size: 0.75rem;
+    color: var(--color-ink-faint);
+    user-select: none;
+  }
+}
