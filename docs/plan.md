@@ -132,7 +132,9 @@ Each step = one exercise or one teach card; autosave on every input;
   needed. Cache headers are Pages-default; `index.html` immutable-asset
   hashing is provided by Vite.
 - **flake.nix devshell** (added in this phase, verified):
-  - `nodejs_22` (dev/build parity with CI), `git`, `nixfmt-rfc-style`.
+  - `nodejs_22` (dev/build parity with CI) + `nixfmt-rfc-style`.
+  - nixpkgs input: `nixos-unstable` (host runs the 26.11 pre-release line;
+    move to the `nixos-26.11` branch when it is published).
   - Enter with `nix develop`; `npm ci && npm run dev`.
   - No global installs, no ad-hoc tooling (NixOS constraint).
 
