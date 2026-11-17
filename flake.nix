@@ -38,7 +38,7 @@
           default = pkgs.mkShell {
             packages = [
               nodejs # npm included; pinned major for CI/dev parity
-              pkgs.nixfmt-rfc-style # format flake.nix
+              pkgs.nixfmt # format flake.nix
             ];
 
             shellHook = ''
