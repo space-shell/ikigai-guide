@@ -113,7 +113,12 @@ export function Step(props: { route: Accessor<Route> }) {
                 </p>
                 <p class="text-sm text-ink-faint">
                   Step {v.ti + 1} of {v.stepsInStage}
-                  <Show when={v.done}> · completed, you can revise and resubmit</Show>
+                  <Show when={v.done}>
+                    {" · "}
+                    {v.step.kind === "teach"
+                      ? "completed"
+                      : "completed, you can revise and resubmit"}
+                  </Show>
                 </p>
                 <div
                   class="neu-track mt-1 h-1.5 w-full"

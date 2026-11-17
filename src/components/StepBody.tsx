@@ -102,11 +102,11 @@ function TeachBody(props: {
       <For each={props.step.paragraphs}>
         {(p) => <p class="text-ink-soft">{p}</p>}
       </For>
-      <ContinueRow
-        label={props.done ? "Update answer" : "Continue"}
-        variant={props.done ? "secondary" : "accent"}
-        onClick={() => props.onComplete()}
-      />
+      {/* Teach steps are read-only: no submit in revise mode. Advancement is
+          handled by the footer "Next step" or the stage-end view. */}
+      <Show when={!props.done}>
+        <ContinueRow label="Continue" variant="accent" onClick={() => props.onComplete()} />
+      </Show>
     </section>
   );
 }

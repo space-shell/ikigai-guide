@@ -13,6 +13,7 @@ import { render } from "solid-js/web";
 import { createSignal } from "solid-js";
 import type { Route } from "../src/router";
 import { Step } from "../src/pages/Step";
+import { STAGES } from "../src/content/journey";
 import { completeStep, resetJourney } from "../src/state/store";
 
 type DelegatedElement = HTMLElement & { [key: string]: unknown };
@@ -82,6 +83,20 @@ describe("Step page: advancement re-renders content", () => {
     expect(continueBtn!.classList.contains("neu-button-accent")).toBe(true);
     expect(continueBtn!.classList.contains("neu-button")).toBe(false);
     expect(buttonWithLabel("Next step →")).toBeNull();
+
+    // completed teach step: read-only, NO in-editor submit button at all;
+    // the footer "Next step" remains the only accent primary
+    clickButtonWithLabel("Continue");
+    await tick();
+    expect(buttonWithLabel("Continue")).toBeNull();
+    expect(buttonWithLabel("Update answer")).toBeNull();
+    expect(buttonWithLabel("Complete this step")).toBeNull();
+    const nextAfterTeach = buttonWithLabel("Next step →");
+    expect(nextAfterTeach).not.toBeNull();
+    expect(nextAfterTeach!.classList.contains("neu-button-accent")).toBe(true);
+    expect(bodyText()).toContain("· completed");
+    expect(bodyText()).not.toContain("revise and resubmit");
+    expect(bodyText()).toContain("Psychiatrist Kamiya Mieko");
 
     // advance: teach step 0 -> teach step 1
     setRoute({ name: "step", stage: 0, step: 1 });
@@ -173,5 +188,67 @@ describe("Step page: advancement re-renders content", () => {
     expect(bodyText()).toContain("Stage complete");
     expect(bodyText()).toContain("Until next time");
     expect(bodyText()).not.toContain("Ikigai-9 baseline");
+  });
+
+  it("completed editable steps show 'Update answer' on the secondary variant", async () => {
+    const parent = document.createElement("div");
+    document.body.appendChild(parent);
+
+    const completeAllBefore = (stageIndex: number, stepIndex: number) => {
+      resetJourney();
+      for (let s = 0; s <= stageIndex; s++) {
+        const stage = STAGES[s]!;
+        const last = s === stageIndex ? stepIndex : stage.steps.length;
+        for (let t = 0; t < last; t++) completeStep(`${s}-${t}`);
+      }
+    };
+
+    const [route, setRoute] = createSignal<Route>({
+      name: "step",
+      stage: 0,
+      step: 3,
+    });
+    dispose = render(() => <Step route={route} />, parent);
+
+    const cases: Array<{ stage: number; step: number; answer: unknown; h1: string }> = [
+      { stage: 0, step: 3, answer: { why: "w", hope: "h" }, h1: "Before we begin" },
+      {
+        // a non-last scale step, so revise mode renders instead of the interstitial
+        stage: 3,
+        step: 2,
+        answer: { satisfaction: 2, growth: 3, future: 2, resonance: 1, freedom: 3, actualization: 2, meaning: 2, mission: 1 },
+        h1: "Needs self-rating",
+      },
+      {
+        stage: 1,
+        step: 2,
+        answer: {
+          entries: [
+            { when: "age 6", what: "one" },
+            { when: "age 8", what: "two" },
+            { when: "age 10", what: "three" },
+            { when: "age 12", what: "four" },
+          ],
+        },
+        h1: "Peak-moments timeline",
+      },
+      { stage: 3, step: 3, answer: { selected: ["growth"] }, h1: "Values clarification" },
+    ];
+
+    for (const c of cases) {
+      completeAllBefore(c.stage, c.step);
+      completeStep(`${c.stage}-${c.step}`, c.answer);
+      setRoute({ name: "step", stage: c.stage, step: c.step });
+      await tick();
+
+      expect(document.querySelector("h1")?.textContent).toContain(c.h1);
+      const updateBtn = buttonWithLabel("Update answer");
+      expect(updateBtn, `1-${c.stage}-${c.step}`).not.toBeNull();
+      expect(updateBtn!.classList.contains("neu-button")).toBe(true);
+      expect(updateBtn!.classList.contains("neu-button-accent")).toBe(false);
+      expect(buttonWithLabel("Complete this step")).toBeNull();
+      expect(buttonWithLabel("Submit")).toBeNull();
+      expect(bodyText()).toContain("completed, you can revise and resubmit");
+    }
   });
 });
