@@ -141,7 +141,7 @@ export function Step(props: { route: Accessor<Route> }) {
                   />
                 </div>
 
-                <div class="mt-10 pt-4">
+                <div class="mt-10 flex items-center justify-between pt-4">
                   <button
                     type="button"
                     class="text-sm text-ink-faint underline-offset-4 hover:text-ink hover:underline"
@@ -149,6 +149,15 @@ export function Step(props: { route: Accessor<Route> }) {
                   >
                     ← Previous
                   </button>
+                  <Show when={v.done && v.ti < v.stepsInStage - 1}>
+                    <button
+                      type="button"
+                      class="neu-button-accent px-5 py-2 text-sm font-medium"
+                      onClick={() => navigate(`#/journey/${v.si}/${v.ti + 1}`)}
+                    >
+                      Next step →
+                    </button>
+                  </Show>
                 </div>
               </div>
             )}
