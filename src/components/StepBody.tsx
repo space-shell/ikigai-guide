@@ -13,6 +13,8 @@ export interface StepBodyProps {
   step: Step;
   stepId: string;
   initial: unknown;
+  /** Whether the step is already completed (revise mode). */
+  done: boolean;
   /** Autosave drafts; does not mark the step complete. */
   onDraft: (answer: unknown) => void;
   /** Finish the step: marks completion and stores the final answer. */
@@ -29,6 +31,7 @@ export function StepBody(props: StepBodyProps) {
       <Show when={props.step.kind === "teach"}>
         <TeachBody
           step={props.step as TeachStep}
+          done={props.done}
           onComplete={() => props.onComplete(null)}
         />
       </Show>
@@ -37,6 +40,7 @@ export function StepBody(props: StepBodyProps) {
           step={props.step as PromptsStep}
           stepId={props.stepId}
           initial={(props.initial ?? {}) as Record<string, string>}
+          done={props.done}
           onDraft={props.onDraft}
           onComplete={(a) => props.onComplete(a)}
         />
@@ -46,6 +50,7 @@ export function StepBody(props: StepBodyProps) {
           step={props.step as ScaleStep}
           stepId={props.stepId}
           initial={(props.initial ?? {}) as Record<string, number>}
+          done={props.done}
           onDraft={props.onDraft}
           onComplete={(a) => props.onComplete(a)}
         />
@@ -58,6 +63,7 @@ export function StepBody(props: StepBodyProps) {
             entries: Record<string, string>[];
           }}
           suggestions={suggestionsFor(props.step)}
+          done={props.done}
           onDraft={props.onDraft}
           onComplete={(a) => props.onComplete(a)}
         />
@@ -70,6 +76,7 @@ export function StepBody(props: StepBodyProps) {
             selected: string[];
             free?: Record<string, string>;
           }}
+          done={props.done}
           onDraft={props.onDraft}
           onComplete={(a) => props.onComplete(a)}
         />
@@ -78,7 +85,11 @@ export function StepBody(props: StepBodyProps) {
   );
 }
 
-function TeachBody(props: { step: TeachStep; onComplete: () => void }) {
+function TeachBody(props: {
+  step: TeachStep;
+  done: boolean;
+  onComplete: () => void;
+}) {
   return (
     <section class="flex flex-col gap-6">
       <Show when={props.step.bullets}>
@@ -91,7 +102,11 @@ function TeachBody(props: { step: TeachStep; onComplete: () => void }) {
       <For each={props.step.paragraphs}>
         {(p) => <p class="text-ink-soft">{p}</p>}
       </For>
-      <ContinueRow label="Continue" onClick={() => props.onComplete()} />
+      <ContinueRow
+        label={props.done ? "Update answer" : "Continue"}
+        variant={props.done ? "secondary" : "accent"}
+        onClick={() => props.onComplete()}
+      />
     </section>
   );
 }
@@ -100,6 +115,7 @@ function PromptsBody(props: {
   step: PromptsStep;
   stepId: string;
   initial: Record<string, string>;
+  done: boolean;
   onDraft: (a: Record<string, string>) => void;
   onComplete: (a: Record<string, string>) => void;
 }) {
@@ -169,7 +185,8 @@ function PromptsBody(props: {
         )}
       </For>
       <ContinueRow
-        label="Complete this step"
+        label={props.done ? "Update answer" : "Complete this step"}
+        variant={props.done ? "secondary" : "accent"}
         onClick={submit}
         hint={!ready() && attempted() ? "Answer the highlighted prompts to continue." : undefined}
       />
@@ -183,6 +200,7 @@ function ScaleBody(props: {
   step: ScaleStep;
   stepId: string;
   initial: Record<string, number>;
+  done: boolean;
   onDraft: (a: Record<string, number>) => void;
   onComplete: (a: Record<string, number>) => void;
 }) {
@@ -248,7 +266,8 @@ function ScaleBody(props: {
         </For>
       </div>
       <ContinueRow
-        label="Submit"
+        label={props.done ? "Update answer" : "Submit"}
+        variant={props.done ? "secondary" : "accent"}
         onClick={submit}
         hint={!ready() && attempted() ? "Answer every statement to continue." : undefined}
       />
@@ -261,6 +280,7 @@ function ListBody(props: {
   stepId: string;
   initial: { entries: Record<string, string>[] };
   suggestions?: SeedSuggestion[];
+  done: boolean;
   onDraft: (a: { entries: Record<string, string>[] }) => void;
   onComplete: (a: { entries: Record<string, string>[] }) => void;
 }) {
@@ -432,7 +452,8 @@ function ListBody(props: {
       </div>
 
       <ContinueRow
-        label="Complete this step"
+        label={props.done ? "Update answer" : "Complete this step"}
+        variant={props.done ? "secondary" : "accent"}
         onClick={submit}
         hint={
           !ready() && attempted()
@@ -448,6 +469,7 @@ function PickBody(props: {
   step: PickStep;
   stepId: string;
   initial: { selected: string[]; free?: Record<string, string> };
+  done: boolean;
   onDraft: (a: { selected: string[]; free?: Record<string, string> }) => void;
   onComplete: (a: { selected: string[]; free?: Record<string, string> }) => void;
 }) {
@@ -538,7 +560,8 @@ function PickBody(props: {
       </Show>
 
       <ContinueRow
-        label="Complete this step"
+        label={props.done ? "Update answer" : "Complete this step"}
+        variant={props.done ? "secondary" : "accent"}
         onClick={submit}
         hint={!ready() && attempted() ? `Choose at least ${min}.` : undefined}
       />
@@ -546,12 +569,22 @@ function PickBody(props: {
   );
 }
 
-function ContinueRow(props: { label: string; onClick: () => void; hint?: string }) {
+function ContinueRow(props: {
+  label: string;
+  onClick: () => void;
+  hint?: string;
+  /** accent = solid indigo (pre-completion); secondary = embossed (revise mode) */
+  variant?: "accent" | "secondary";
+}) {
   return (
     <div class="mt-2 flex flex-col gap-2">
       <button
         type="button"
-        class="neu-button-accent self-start px-6 py-2.5 font-medium"
+        class={
+          props.variant === "secondary"
+            ? "neu-button self-start px-6 py-2.5 font-medium text-ink-soft"
+            : "neu-button-accent self-start px-6 py-2.5 font-medium"
+        }
         onClick={props.onClick}
       >
         {props.label}

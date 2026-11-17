@@ -136,6 +136,7 @@ export function Step(props: { route: Accessor<Route> }) {
                     step={v.step}
                     stepId={v.id}
                     initial={answerFor(v.id)}
+                    done={v.done}
                     onDraft={(a) => saveAnswer(v.id, a)}
                     onComplete={(a) => handleComplete(v, a)}
                   />

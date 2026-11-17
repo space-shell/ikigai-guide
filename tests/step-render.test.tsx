@@ -46,11 +46,17 @@ function setInputValue(id: string, value: string): void {
 }
 
 function clickButtonWithLabel(label: string): void {
-  const btn = [...document.querySelectorAll("button")].find(
-    (b) => b.textContent.trim() === label,
-  ) as DelegatedElement | undefined;
+  const btn = buttonWithLabel(label);
   expect(btn).not.toBeNull();
-  fire(btn!, "click");
+  fire(btn as unknown as DelegatedElement, "click");
+}
+
+function buttonWithLabel(label: string): HTMLButtonElement | null {
+  return (
+    ([...document.querySelectorAll("button")].find(
+      (b) => b.textContent?.trim() === label,
+    ) as HTMLButtonElement | undefined) ?? null
+  );
 }
 
 describe("Step page: advancement re-renders content", () => {
@@ -70,6 +76,13 @@ describe("Step page: advancement re-renders content", () => {
     expect(bodyText()).toContain("Psychiatrist Kamiya Mieko");
     expect(bodyText()).not.toContain("Andrés Zuzunaga drew it");
 
+    // uncompleted teach step: "Continue" on the accent variant, no Next button
+    const continueBtn = buttonWithLabel("Continue");
+    expect(continueBtn).not.toBeNull();
+    expect(continueBtn!.classList.contains("neu-button-accent")).toBe(true);
+    expect(continueBtn!.classList.contains("neu-button")).toBe(false);
+    expect(buttonWithLabel("Next step →")).toBeNull();
+
     // advance: teach step 0 -> teach step 1
     setRoute({ name: "step", stage: 0, step: 1 });
     await tick();
@@ -84,6 +97,13 @@ describe("Step page: advancement re-renders content", () => {
     expect(document.getElementById("0-3-why")).not.toBeNull();
     expect(bodyText()).not.toContain("Andrés Zuzunaga drew it");
 
+    // uncompleted prompts step: "Complete this step" accent, no Next button
+    const completeBtn = buttonWithLabel("Complete this step");
+    expect(completeBtn).not.toBeNull();
+    expect(completeBtn!.classList.contains("neu-button-accent")).toBe(true);
+    expect(buttonWithLabel("Update answer")).toBeNull();
+    expect(buttonWithLabel("Next step →")).toBeNull();
+
     // complete the prompts step: completion marker appears, content coherent
     setInputValue("0-3-why", "testing");
     setInputValue("0-3-hope", "also testing");
@@ -93,6 +113,16 @@ describe("Step page: advancement re-renders content", () => {
     expect((document.getElementById("0-3-why") as HTMLTextAreaElement).value).toBe(
       "testing",
     );
+
+    // completed prompts step: "Update answer" secondary, "Next step →" primary
+    const updateBtn = buttonWithLabel("Update answer");
+    expect(updateBtn).not.toBeNull();
+    expect(updateBtn!.classList.contains("neu-button")).toBe(true);
+    expect(updateBtn!.classList.contains("neu-button-accent")).toBe(false);
+    const nextBtn = buttonWithLabel("Next step →");
+    expect(nextBtn).not.toBeNull();
+    expect(nextBtn!.classList.contains("neu-button-accent")).toBe(true);
+    expect(buttonWithLabel("Complete this step")).toBeNull();
 
     // advance: prompts -> scale editor (9 fieldsets, no prompts remnants)
     setRoute({ name: "step", stage: 0, step: 4 });
