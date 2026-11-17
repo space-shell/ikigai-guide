@@ -36,6 +36,8 @@
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    /* Keep the centered container stable when the scrollbar appears/leaves. */
+    scrollbar-gutter: stable;
   }
 
   body {
