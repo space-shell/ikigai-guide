@@ -64,6 +64,23 @@
   }
 }
 
+@media print {
+  header,
+  .print\:hidden,
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+}
+
 @layer components {
   /* Small uppercase section label — Scandinavian editorial feel */
   .kicker {
